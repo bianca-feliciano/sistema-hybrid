@@ -1,82 +1,64 @@
-📦 API de Gestão de Estoque - Equipa Fórmula SAE Hybrid
+# API de Gestão de Estoque - Equipa Fórmula SAE Hybrid
 
-🚀 Funcionalidades
-🔐 Autenticação e Autorização: Registo e login de utilizadores com tokens JWT
-👥 Níveis de Acesso: Diferenciação entre admin (ex: capitão da equipa) e membro
-🏷️ CRUD de Patrocinadores: Gestão de empresas parceiras que fornecem equipamentos
-📦 CRUD de Equipamentos: Gestão de estoque de peças com vínculo a patrocinadores (relação 1:N)
-🔒 Proteção de Rotas: Ações sensíveis (como exclusão) restritas apenas a administradores
-🧰 Tecnologias Utilizadas
-JavaScript — linguagem principal do backend
-Express.js — framework para construção da API
-PostgreSQL — banco de dados relacional
-JSON Web Token (JWT) — autenticação e segurança
-🗄️ Estrutura da Base de Dados
+## Funcionalidades
 
-O projeto possui 3 entidades principais:
+- **Autenticação e Autorização:** Registo e Login de utilizadores utilizando tokens JWT.
+- **Níveis de Acesso:** Diferenciação entre usuários com o perfil `admin` (ex: Capitão da equipe) e `membro`.
+- **CRUD de Patrocinadores:** Gestão de empresas parceiras que fornecem equipamentos.
+- **CRUD de Equipamentos:** Gestão do estoque de peças com vínculo aos patrocinadores (Relação 1:N).
+- **Proteção de Rotas:** A exclusão de patrocinadores e peças críticas está restrita apenas a usuários administradores.
 
-usuarios
-Armazena os membros da equipa
-Controla níveis de acesso (role)
-patrocinadores
-Armazena empresas fornecedoras
-equipamentos
-Armazena o inventário de peças
-Possui chave estrangeira patrocinador_id (relação 1:N)
-⚙️ Como Executar o Projeto
-📌 Pré-requisitos
-Node.js (versão LTS)
-Docker Desktop
-DBeaver (ou outro gerenciador de banco de dados)
-Insomnia ou Postman
-🚀 Passo a Passo
-1. Clonar o repositório e instalar dependências
-npm install
-2. Subir o banco de dados com Docker
+## Tecnologias Utilizadas 
+
+- **JavaScript:** Escolhido para manter o projeto leve e focado no lado do backend.
+- **Express.js:** Framework minimalista para gerir as rotas da API. 
+- **PostgreSQL:** A base de dados relacional escolhida. garantindo que o ambiente de desenvolvimento seja o mesmo em qualquer computador.
+- **JSONWebToken (JWT):** Para a gestão de autenticações.
+
+## Estrutura da Base de Dados
+
+O projeto possui 3 entidades relacionadas:
+1. `usuarios`: Gere os membros e os seus níveis de acesso (`role`).
+2. `patrocinadores`: Armazena os dados das empresas fornecedoras.
+3. `equipamentos`: Armazena o inventário, contendo uma *Foreign Key* (`patrocinador_id`) vinculada à tabela de patrocinadores.
+
+## Como Executar o Projeto
+
+### Pré-requisitos
+- Node.js instalado (versão LTS)
+- Docker Desktop instalado
+- DBeaver (ou outro gestor de bases de dados)
+- Insomnia ou Postman (para testar as rotas)
+
+### Passo a Passo
+
+1. **Clonar e instalar dependências:**
+   Abra o terminal na pasta do projeto e instale as bibliotecas necessárias:
+   npm install
+
+2. **Subir a Base de Dados com Docker:**
+Execute o seguinte comando para criar e iniciar o contentor do PostgreSQL:
+
 docker-compose up -d
-3. Conectar ao banco de dados
 
-Abra o DBeaver e conecte usando as credenciais configuradas no Docker.
+3. **Criar e Popular as Tabelas:**
 
-4. Criar e popular as tabelas
+Abra o DBeaver e conecte-se com suas credenciais:
 
-Execute os scripts SQL na seguinte ordem:
 
-usuários
-patrocinadores
-equipamentos
-5. Iniciar a API
+4. **Execute scripts SQL para criar as tabelas (na ordem: Usuários, Patrocinadores, Equipamentos).
+
+5. **Iniciar a API:**
+
 node index.js
+O servidor executará em http://localhost:3000.
 
-Servidor rodando em:
+# Como Testar as Rotas
 
-http://localhost:3000
-🧪 Como Testar as Rotas
+Recomenda-se a utilização do Insomnia:
 
-Recomenda-se o uso do Insomnia ou Postman.
+Faça uma requisição POST para a rota /login com o email e a palavra-passe do administrador.
 
-🔑 Login
+Copie o token devolvido na resposta.
 
-Faça uma requisição:
-
-POST /login
-
-Com:
-
-{
-  "email": "admin@email.com",
-  "password": "sua_senha"
-}
-🔐 Usando Token JWT
-
-Copie o token retornado e envie nas rotas protegidas:
-
-Authorization: Bearer <seu_token>
-
-Exemplo:
-
-DELETE /patrocinadores/:id
-🔒 Observações de Segurança
-Senhas são protegidas com hash (bcrypt, se aplicável no projeto)
-Autenticação via JWT
-Rotas sensíveis protegidas por middleware de autorização
+Nas rotas protegidas (como DELETE /patrocinadores/:id), vá ao separador "Auth" ou "Headers" e adicione o cabeçalho: Authorization: Bearer <o_seu_token>.
