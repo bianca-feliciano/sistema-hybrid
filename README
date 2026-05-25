@@ -1,0 +1,64 @@
+# API de Gestão de Estoque - Equipa Fórmula SAE Hybrid
+
+## Funcionalidades
+
+- **Autenticação e Autorização:** Registo e Login de utilizadores utilizando tokens JWT.
+- **Níveis de Acesso:** Diferenciação entre usuários com o perfil `admin` (ex: Capitão da equipe) e `membro`.
+- **CRUD de Patrocinadores:** Gestão de empresas parceiras que fornecem equipamentos.
+- **CRUD de Equipamentos:** Gestão do estoque de peças com vínculo aos patrocinadores (Relação 1:N).
+- **Proteção de Rotas:** A exclusão de patrocinadores e peças críticas está restrita apenas a usuários administradores.
+
+## Tecnologias Utilizadas 
+
+- **JavaScript:** Escolhido para manter o projeto leve e focado no lado do backend.
+- **Express.js:** Framework minimalista para gerir as rotas da API. 
+- **PostgreSQL:** A base de dados relacional escolhida. garantindo que o ambiente de desenvolvimento seja o mesmo em qualquer computador.
+- **JSONWebToken (JWT):** Para a gestão de autenticações.
+
+## Estrutura da Base de Dados
+
+O projeto possui 3 entidades relacionadas:
+1. `usuarios`: Gere os membros e os seus níveis de acesso (`role`).
+2. `patrocinadores`: Armazena os dados das empresas fornecedoras.
+3. `equipamentos`: Armazena o inventário, contendo uma *Foreign Key* (`patrocinador_id`) vinculada à tabela de patrocinadores.
+
+## Como Executar o Projeto
+
+### Pré-requisitos
+- Node.js instalado (versão LTS)
+- Docker Desktop instalado
+- DBeaver (ou outro gestor de bases de dados)
+- Insomnia ou Postman (para testar as rotas)
+
+### Passo a Passo
+
+1. **Clonar e instalar dependências:**
+   Abra o terminal na pasta do projeto e instale as bibliotecas necessárias:
+   npm install
+
+2. **Subir a Base de Dados com Docker:**
+Execute o seguinte comando para criar e iniciar o contentor do PostgreSQL:
+
+docker-compose up -d
+
+3. **Criar e Popular as Tabelas:**
+
+Abra o DBeaver e conecte-se com suas credenciais:
+
+
+4. **Execute scripts SQL para criar as tabelas (na ordem: Usuários, Patrocinadores, Equipamentos).
+
+5. **Iniciar a API:**
+
+node index.js
+O servidor executará em http://localhost:3000.
+
+# Como Testar as Rotas
+
+Recomenda-se a utilização do Insomnia:
+
+Faça uma requisição POST para a rota /login com o email e a palavra-passe do administrador.
+
+Copie o token devolvido na resposta.
+
+Nas rotas protegidas (como DELETE /patrocinadores/:id), vá ao separador "Auth" ou "Headers" e adicione o cabeçalho: Authorization: Bearer <o_seu_token>.
